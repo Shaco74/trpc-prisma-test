@@ -21,3 +21,55 @@ model Post {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 }
+
+model Company {
+  id    String @id @default(uuid())
+  name String
+  catalog Catalog[]
+
+  // To return `Date`s intact through the API we use transformers
+  // https://trpc.io/docs/data-transformers
+  // This is unique so it can be used for cursor-based pagination
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Catalog {
+  id    String @id @default(uuid())
+  name String
+
+  owner Company @relation(fields: [ownerId], references: [id])
+  ownerId String 
+
+  categories Category[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Category {
+  id    String @id @default(uuid())
+  name String
+  description String?
+
+  owner Catalog @relation(fields: [ownerId], references: [id])
+  ownerId String 
+
+  products Product[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Product {
+  id    String @id @default(uuid())
+  name String
+  price Float
+  description String?
+
+  owner Category @relation(fields: [ownerId], references: [id])
+  ownerId String 
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}

@@ -20,6 +20,42 @@ async function main() {
     },
     update: {},
   });
+
+  const firstCompanyID = '12e311-fc16-47e0-bd02-d218a370a078';
+
+  // create initial company
+  await prisma.company.upsert({
+    where: {
+      id: firstCompanyID,
+    },
+    create: {
+      id: firstCompanyID,
+      name: 'First Company',
+      catalog: {
+        create: {
+          name: 'First Catalog',
+          categories: {
+            create: {
+              name: 'First Category',
+              description:
+                'This is an example category generated from `prisma/seed.ts`',
+              products: {
+                create: {
+                  name: 'First Product',
+                  description:
+                    'This is an example product generated from `prisma/seed.ts`',
+                  price: 19.99,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    update: {},
+  });
+
+
 }
 
 main()
